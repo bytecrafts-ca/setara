@@ -1,6 +1,6 @@
-# SETARA
+# Zak Supplies
 
-Custom Next.js + React + Three.js ecommerce demo for a dual retail gift shop and used-item resale marketplace.
+Custom Next.js ecommerce site for home goods, clothing, gifts, and a transparent resale marketplace.
 
 ## Run
 
@@ -13,10 +13,14 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## What’s included
 
-- **Retail:** New merchandise, gift wrapping add-ons, custom gift quote form (with photo upload), pre-packaged gifts by occasion
-- **Resale:** Separate marketplace with condition, defects, dimensions, pickup-only support
+- **Shop:** Home goods, clothing, and retail merchandise with search and filters
+- **Gifts section:** Pre-packaged sets, custom gift quotes (with photo upload), and gift wrapping add-ons
+- **Resale:** Separate marketplace with condition, defects, dimensions, and pickup-only support
 - **Cart / checkout:** Quantities, taxes (HST demo), shipping/delivery/pickup, Canadian payment method options (demo, not live charged)
 - **Admin:** Add/edit/remove listings, mark sold, manage orders and custom quote requests (browser localStorage)
-- **Three.js:** Animated gift hero on the home page
+- **Search:** Global product search across retail and resale
 
-Temporary brand name **SETARA** until real branding is provided.
+## Live demo
+
+- **Site:** https://setara-ten.vercel.app
+- **Repo:** https://github.com/bytecrafts-ca/setara

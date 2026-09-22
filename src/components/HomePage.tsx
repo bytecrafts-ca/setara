@@ -4,15 +4,49 @@ import Link from "next/link";
 import { useCatalog } from "@/store/catalog";
 import { ProductCard } from "./ProductCard";
 import { HeroVisual } from "./HeroVisual";
+import { SearchBar } from "./SearchBar";
+
+const CATEGORIES = [
+  {
+    href: "/shop/home",
+    label: "Home goods",
+    copy: "House items, decor, and everyday essentials.",
+  },
+  {
+    href: "/shop/clothing",
+    label: "Clothing",
+    copy: "Apparel and accessories, new and resale.",
+  },
+  {
+    href: "/shop/gifts",
+    label: "Gifts",
+    copy: "Pre-packaged sets, custom requests, and wrapping.",
+  },
+  {
+    href: "/resale",
+    label: "Resale",
+    copy: "Used items with condition clearly disclosed.",
+  },
+];
 
 export function HomePage() {
   const products = useCatalog((s) => s.products);
-  const newItems = products.filter((p) => p.isNew && p.available).slice(0, 4);
-  const sets = products
-    .filter((p) => p.category === "Pre-Packaged" && p.available)
+  const featured = products.filter((p) => p.available).slice(0, 4);
+  const homeItems = products
+    .filter(
+      (p) =>
+        p.available &&
+        (p.category === "Home" ||
+          p.category === "Merchandise" ||
+          p.tags.includes("home")),
+    )
     .slice(0, 3);
-  const resale = products
-    .filter((p) => p.area === "resale" && p.available)
+  const clothing = products
+    .filter(
+      (p) =>
+        p.available &&
+        (p.category === "Clothing" || p.tags.includes("clothing")),
+    )
     .slice(0, 3);
 
   return (
@@ -28,55 +62,59 @@ export function HomePage() {
         <div className="hero-shade" />
         <HeroVisual />
         <div className="hero-content">
-          <p className="brand-hero">SETARA</p>
-          <h1>Gifts worth giving. Finds worth keeping.</h1>
+          <p className="brand-hero">Zak Supplies</p>
+          <h1>Everything from home to wardrobe.</h1>
           <p className="hero-sub">
-            New merchandise, custom gifts, and a transparent resale
-            marketplace in one trusted place.
+            Shop house items, clothing, and more. Gifts are here too, in their
+            own section. Search the full catalog anytime.
           </p>
+          <SearchBar variant="hero" />
           <div className="hero-ctas">
-            <Link href="/shop/new" className="btn primary">
-              Shop new arrivals
+            <Link href="/shop" className="btn primary">
+              Browse all products
             </Link>
-            <Link href="/resale" className="btn ghost">
-              Browse resale
+            <Link href="/shop/gifts" className="btn ghost">
+              Gifts section
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="band split-band">
-        <div>
-          <p className="eyebrow">Retail shop</p>
-          <h2>Merchandise & gift sets</h2>
-          <p>
-            New arrivals, pre-packaged gifts by occasion, gift wrapping at
-            checkout, and custom requests with photo upload.
-          </p>
-          <Link href="/shop/new" className="text-link">
-            Enter the shop →
-          </Link>
+      <section className="section">
+        <div className="section-head">
+          <h2>Shop by category</h2>
+          <Link href="/search">Search all</Link>
         </div>
-        <div>
-          <p className="eyebrow">Marketplace</p>
-          <h2>Used & resale</h2>
-          <p>
-            Clothing, furniture, household goods, and electronics with clear
-            condition notes, defects disclosed, and pickup-only when needed.
-          </p>
-          <Link href="/resale" className="text-link">
-            Enter resale →
-          </Link>
+        <div className="category-grid">
+          {CATEGORIES.map((cat) => (
+            <Link key={cat.href} href={cat.href} className="category-card">
+              <h3>{cat.label}</h3>
+              <p>{cat.copy}</p>
+              <span className="text-link">Shop →</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="section muted">
+        <div className="section-head">
+          <h2>Featured products</h2>
+          <Link href="/shop">View all</Link>
+        </div>
+        <div className="product-grid">
+          {featured.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
         </div>
       </section>
 
       <section className="section">
         <div className="section-head">
-          <h2>New arrivals</h2>
-          <Link href="/shop/new">View all</Link>
+          <h2>Home goods</h2>
+          <Link href="/shop/home">See all home</Link>
         </div>
-        <div className="product-grid">
-          {newItems.map((p) => (
+        <div className="product-grid three">
+          {homeItems.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}
         </div>
@@ -84,36 +122,24 @@ export function HomePage() {
 
       <section className="section muted">
         <div className="section-head">
-          <h2>Pre-packaged gifts</h2>
-          <Link href="/shop/prepackaged">Shop by occasion</Link>
+          <h2>Clothing</h2>
+          <Link href="/shop/clothing">See all clothing</Link>
         </div>
         <div className="product-grid three">
-          {sets.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="section-head">
-          <h2>From the resale floor</h2>
-          <Link href="/resale">See marketplace</Link>
-        </div>
-        <div className="product-grid three">
-          {resale.map((p) => (
+          {clothing.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}
         </div>
       </section>
 
       <section className="cta-strip">
-        <h2>Need something personal?</h2>
+        <h2>Looking for a gift?</h2>
         <p>
-          Request a custom gift. Share details and a photo or design. We quote
-          before you pay when pricing varies.
+          Gifts are a dedicated section. Browse pre-packaged sets, request
+          something custom, or add wrapping at checkout.
         </p>
-        <Link href="/shop/custom" className="btn primary">
-          Start a custom request
+        <Link href="/shop/gifts" className="btn primary">
+          Go to gifts section
         </Link>
       </section>
     </>

@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { useCatalog } from "@/store/catalog";
 import { ProductBrowser } from "@/components/ProductBrowser";
+import { SearchBar } from "@/components/SearchBar";
 import Link from "next/link";
 
 export default function ShopIndexPage() {
@@ -15,24 +16,25 @@ export default function ShopIndexPage() {
   return (
     <>
       <div className="page-hero">
-        <span className="area-chip">Retail shop</span>
-        <h1>Shop</h1>
+        <span className="area-chip">Shop</span>
+        <h1>All products</h1>
         <p>
-          New merchandise, gift sets, wrapping, and custom requests live here.
-          Resale is in a separate marketplace.
+          Home goods, clothing, and retail merchandise. For gifts, visit the
+          dedicated gifts section.
         </p>
-        <div className="occasion-tabs">
+        <SearchBar variant="hero" />
+        <div className="occasion-tabs" style={{ marginTop: "1.25rem" }}>
+          <Link href="/shop/home" className="chip">
+            Home
+          </Link>
+          <Link href="/shop/clothing" className="chip">
+            Clothing
+          </Link>
           <Link href="/shop/new" className="chip">
             New arrivals
           </Link>
-          <Link href="/shop/prepackaged" className="chip">
-            Pre-packaged
-          </Link>
-          <Link href="/shop/wrapping" className="chip">
-            Wrapping
-          </Link>
-          <Link href="/shop/custom" className="chip">
-            Custom
+          <Link href="/shop/gifts" className="chip">
+            Gifts section
           </Link>
         </div>
       </div>

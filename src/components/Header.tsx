@@ -3,16 +3,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu, Search, ShoppingBag, X } from "lucide-react";
+import { Menu, ShoppingBag, X } from "lucide-react";
 import { useCart } from "@/store/cart";
+import { SearchBar } from "./SearchBar";
 
 const NAV = [
-  { href: "/shop/new", label: "New Arrivals" },
-  { href: "/shop/prepackaged", label: "Gift Sets" },
-  { href: "/shop/custom", label: "Custom" },
-  { href: "/shop/wrapping", label: "Wrapping" },
+  { href: "/shop", label: "Shop", exact: true },
+  { href: "/shop/home", label: "Home" },
+  { href: "/shop/clothing", label: "Clothing" },
+  { href: "/shop/gifts", label: "Gifts" },
   { href: "/resale", label: "Resale" },
 ];
+
+function navActive(pathname: string, href: string, exact?: boolean) {
+  if (exact) return pathname === href;
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export function Header() {
   const pathname = usePathname();
@@ -46,8 +52,8 @@ export function Header() {
           {open ? <X size={20} /> : <Menu size={20} />}
         </button>
 
-        <Link href="/" className="brand" aria-label="SETARA home">
-          SETARA
+        <Link href="/" className="brand" aria-label="Zak Supplies home">
+          Zak Supplies
         </Link>
 
         <nav className="desk-nav" aria-label="Primary">
@@ -55,7 +61,7 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className={pathname.startsWith(item.href) ? "active" : ""}
+              className={navActive(pathname, item.href, item.exact) ? "active" : ""}
             >
               {item.label}
             </Link>
@@ -63,9 +69,9 @@ export function Header() {
         </nav>
 
         <div className="header-actions">
-          <Link href="/shop/new" className="icon-btn" aria-label="Search shop">
-            <Search size={18} />
-          </Link>
+          <div className="header-search desk-only">
+            <SearchBar variant="header" />
+          </div>
           <Link href="/cart" className="icon-btn cart-btn" aria-label="Cart">
             <ShoppingBag size={18} />
             {count > 0 && <span className="cart-count">{count}</span>}
@@ -75,11 +81,13 @@ export function Header() {
 
       {open && (
         <nav className="mobile-nav" aria-label="Mobile">
+          <SearchBar variant="header" />
           {NAV.map((item) => (
             <Link key={item.href} href={item.href}>
               {item.label}
             </Link>
           ))}
+          <Link href="/search">Search all</Link>
           <Link href="/contact">Contact</Link>
           <Link href="/admin">Admin</Link>
         </nav>

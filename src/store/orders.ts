@@ -72,6 +72,6 @@ export const useOrders = create<OrdersState>()(
           ),
         }),
     }),
-    { name: "setara-orders" },
+    { name: "zak-supplies-orders" },
   ),
 );

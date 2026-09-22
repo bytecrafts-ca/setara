@@ -40,7 +40,7 @@ export const useCatalog = create<CatalogState>()(
       resetCatalog: () => set({ products: INITIAL_PRODUCTS }),
     }),
     {
-      name: "setara-catalog",
+      name: "zak-supplies-catalog",
       onRehydrateStorage: () => (state) => {
         state?.setHydrated(true);
       },

@@ -16,9 +16,9 @@ const figtree = Figtree({
 });
 
 export const metadata: Metadata = {
-  title: "SETARA | Gifts, Custom Pieces & Resale",
+  title: "Zak Supplies | Home, Clothing, Gifts & Resale",
   description:
-    "Modern gift shop and transparent used-item marketplace. New merchandise, gift wrapping, custom gifts, pre-packaged sets, and resale finds.",
+    "Shop home goods, clothing, and everyday products at Zak Supplies. Gifts are a dedicated section. Search the catalog and browse transparent resale listings.",
 };
 
 export default function RootLayout({
