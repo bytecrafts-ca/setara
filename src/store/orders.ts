@@ -42,13 +42,35 @@ export type CustomRequest = {
   status: "new" | "quoted" | "approved" | "declined";
 };
 
+export type RentalRequest = {
+  id: string;
+  createdAt: string;
+  productId: string;
+  productName: string;
+  startDate: string;
+  endDate: string;
+  days: number;
+  dailyRate: number;
+  rentalTotal: number;
+  deposit: number;
+  fulfillment: "pickup" | "delivery";
+  name: string;
+  email: string;
+  phone: string;
+  notes?: string;
+  status: "new" | "confirmed" | "out" | "returned" | "declined";
+};
+
 type OrdersState = {
   orders: Order[];
   customRequests: CustomRequest[];
+  rentalRequests: RentalRequest[];
   addOrder: (order: Order) => void;
   updateOrder: (id: string, patch: Partial<Order>) => void;
   addCustomRequest: (req: CustomRequest) => void;
   updateCustomRequest: (id: string, patch: Partial<CustomRequest>) => void;
+  addRentalRequest: (req: RentalRequest) => void;
+  updateRentalRequest: (id: string, patch: Partial<RentalRequest>) => void;
 };
 
 export const useOrders = create<OrdersState>()(
@@ -56,6 +78,7 @@ export const useOrders = create<OrdersState>()(
     (set, get) => ({
       orders: [],
       customRequests: [],
+      rentalRequests: [],
       addOrder: (order) => set({ orders: [order, ...get().orders] }),
       updateOrder: (id, patch) =>
         set({
@@ -68,6 +91,14 @@ export const useOrders = create<OrdersState>()(
       updateCustomRequest: (id, patch) =>
         set({
           customRequests: get().customRequests.map((r) =>
+            r.id === id ? { ...r, ...patch } : r,
+          ),
+        }),
+      addRentalRequest: (req) =>
+        set({ rentalRequests: [req, ...(get().rentalRequests ?? [])] }),
+      updateRentalRequest: (id, patch) =>
+        set({
+          rentalRequests: (get().rentalRequests ?? []).map((r) =>
             r.id === id ? { ...r, ...patch } : r,
           ),
         }),

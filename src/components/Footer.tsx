@@ -27,6 +27,7 @@ export function Footer() {
         </div>
         <div>
           <p className="footer-heading">Marketplace</p>
+          <Link href="/rentals">Rentals</Link>
           <Link href="/resale">Used & resale</Link>
           <Link href="/contact">Contact / inquiry</Link>
           <Link href="/admin">Admin</Link>

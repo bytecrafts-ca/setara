@@ -1,5 +1,5 @@
 export type Fulfillment = "ship" | "delivery" | "pickup" | "pickup-only";
-export type ProductArea = "retail" | "resale";
+export type ProductArea = "retail" | "resale" | "rental";
 export type Condition = "new" | "like-new" | "good" | "fair" | "as-is";
 
 export type Product = {
@@ -22,6 +22,9 @@ export type Product = {
   condition?: Condition;
   defects?: string;
   dimensions?: string;
+  /** Rentals: `price` is the daily rate. Deposit is refundable. */
+  deposit?: number;
+  minDays?: number;
   fulfillment: Fulfillment[];
   accent: string;
 };
@@ -311,7 +314,117 @@ export const INITIAL_PRODUCTS: Product[] = [
     fulfillment: ["pickup-only"],
     accent: "#A8B5A0",
   },
+  {
+    id: "rental-party-tent",
+    name: "10×20 Party Tent",
+    description:
+      "White canopy tent with side walls for backyard parties, markets, and events. Fits about 30 guests standing.",
+    price: 85,
+    deposit: 150,
+    minDays: 1,
+    images: [],
+    category: "Events",
+    area: "rental",
+    tags: ["rental", "events", "outdoor"],
+    dimensions: "3m × 6m, 2.7m peak height",
+    available: true,
+    quantity: 2,
+    fulfillment: ["pickup", "delivery"],
+    accent: "#8FA39A",
+  },
+  {
+    id: "rental-tables-chairs",
+    name: "Tables & Chairs Set",
+    description:
+      "Four 6ft folding tables and 24 padded folding chairs. Cleaned and checked before every rental.",
+    price: 60,
+    deposit: 100,
+    minDays: 1,
+    images: [],
+    category: "Events",
+    area: "rental",
+    tags: ["rental", "events", "furniture"],
+    available: true,
+    quantity: 3,
+    fulfillment: ["pickup", "delivery"],
+    accent: "#A39482",
+  },
+  {
+    id: "rental-carpet-cleaner",
+    name: "Carpet & Upholstery Cleaner",
+    description:
+      "Deep-cleaning machine for carpets, rugs, stairs, and couches. Includes hand tool attachment.",
+    price: 35,
+    deposit: 75,
+    minDays: 1,
+    images: [],
+    category: "Home & Cleaning",
+    area: "rental",
+    tags: ["rental", "home", "cleaning"],
+    available: true,
+    quantity: 2,
+    fulfillment: ["pickup"],
+    accent: "#6F8580",
+  },
+  {
+    id: "rental-pressure-washer",
+    name: "Electric Pressure Washer",
+    description:
+      "2000 PSI pressure washer for decks, driveways, patios, and siding. Comes with 3 nozzles and a 7m hose.",
+    price: 40,
+    deposit: 80,
+    minDays: 1,
+    images: [],
+    category: "Tools & Outdoor",
+    area: "rental",
+    tags: ["rental", "outdoor", "tools"],
+    available: true,
+    quantity: 1,
+    fulfillment: ["pickup"],
+    accent: "#5E6E73",
+  },
+  {
+    id: "rental-projector",
+    name: "Projector & Screen Kit",
+    description:
+      "HD projector with a 100 inch pull-up screen and HDMI cable. Great for movie nights, presentations, and events.",
+    price: 50,
+    deposit: 120,
+    minDays: 1,
+    images: [],
+    category: "Electronics",
+    area: "rental",
+    tags: ["rental", "electronics", "events"],
+    available: true,
+    quantity: 1,
+    fulfillment: ["pickup", "delivery"],
+    accent: "#4F5B66",
+  },
+  {
+    id: "rental-chafing-set",
+    name: "Chafing Dish Catering Set",
+    description:
+      "Six stainless steel chafing dishes with fuel holders and serving utensils. Keeps food warm at parties and gatherings.",
+    price: 45,
+    deposit: 60,
+    minDays: 1,
+    images: [],
+    category: "Events",
+    area: "rental",
+    tags: ["rental", "events", "kitchen"],
+    available: true,
+    quantity: 2,
+    fulfillment: ["pickup", "delivery"],
+    accent: "#9C8B70",
+  },
 ];
+
+export const RENTAL_CATEGORIES = [
+  "Events",
+  "Home & Cleaning",
+  "Tools & Outdoor",
+  "Electronics",
+] as const;
 
 export const OCCASIONS = [
   "birthday",

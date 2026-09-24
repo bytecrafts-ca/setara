@@ -42,6 +42,14 @@ export const useCatalog = create<CatalogState>()(
     {
       name: "zak-supplies-catalog",
       skipHydration: true,
+      version: 1,
+      migrate: (persisted) => {
+        const state = persisted as Partial<CatalogState> | undefined;
+        const saved = state?.products ?? [];
+        const savedIds = new Set(saved.map((p) => p.id));
+        const missing = INITIAL_PRODUCTS.filter((p) => !savedIds.has(p.id));
+        return { ...state, products: [...saved, ...missing] } as CatalogState;
+      },
       onRehydrateStorage: () => (state) => {
         state?.setHydrated(true);
       },

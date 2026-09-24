@@ -6,14 +6,21 @@ import { formatCAD } from "@/lib/format";
 import { useCatalog } from "@/store/catalog";
 import { useOrders } from "@/store/orders";
 
-type Tab = "products" | "orders" | "custom" | "add";
+type Tab = "products" | "orders" | "rentals" | "custom" | "add";
 
 export default function AdminPage() {
   const [tab, setTab] = useState<Tab>("products");
   const products = useCatalog((s) => s.products);
   const { addProduct, updateProduct, removeProduct, markUnavailable, resetCatalog } =
     useCatalog();
-  const { orders, customRequests, updateOrder, updateCustomRequest } = useOrders();
+  const {
+    orders,
+    customRequests,
+    rentalRequests = [],
+    updateOrder,
+    updateCustomRequest,
+    updateRentalRequest,
+  } = useOrders();
   const [message, setMessage] = useState("");
 
   const sortedProducts = useMemo(
@@ -24,7 +31,7 @@ export default function AdminPage() {
   function onAdd(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
-    const area = String(fd.get("area")) as "retail" | "resale";
+    const area = String(fd.get("area")) as Product["area"];
     const id = `${area}-${Date.now()}`;
     const fulfillmentRaw = String(fd.get("fulfillment") || "pickup");
     const fulfillment = (
@@ -41,7 +48,7 @@ export default function AdminPage() {
       images: [],
       category: String(fd.get("category") || "Merchandise"),
       area,
-      tags: area === "retail" ? ["new"] : ["resale"],
+      tags: area === "retail" ? ["new"] : [area],
       sizes: String(fd.get("sizes") || "")
         .split(",")
         .map((s) => s.trim())
@@ -63,9 +70,12 @@ export default function AdminPage() {
           : undefined,
       defects: area === "resale" ? String(fd.get("defects") || "") : undefined,
       dimensions:
-        area === "resale" ? String(fd.get("dimensions") || "") : undefined,
+        area !== "retail" ? String(fd.get("dimensions") || "") || undefined : undefined,
+      deposit: area === "rental" ? Number(fd.get("deposit") || 0) : undefined,
+      minDays: area === "rental" ? Math.max(1, Number(fd.get("minDays") || 1)) : undefined,
       fulfillment,
-      accent: area === "resale" ? "#7A8A7E" : "#6B8F71",
+      accent:
+        area === "resale" ? "#7A8A7E" : area === "rental" ? "#6F8580" : "#6B8F71",
     };
 
     addProduct(product);
@@ -92,6 +102,7 @@ export default function AdminPage() {
               ["products", "Products"],
               ["add", "Add listing"],
               ["orders", "Orders"],
+              ["rentals", `Rental requests (${rentalRequests.length})`],
               ["custom", "Custom quotes"],
             ] as const
           ).map(([id, label]) => (
@@ -203,6 +214,7 @@ export default function AdminPage() {
                 <select name="area" defaultValue="retail">
                   <option value="retail">Retail</option>
                   <option value="resale">Resale</option>
+                  <option value="rental">Rental</option>
                 </select>
               </label>
               <label className="field">
@@ -220,7 +232,7 @@ export default function AdminPage() {
             </label>
             <div className="form-grid two">
               <label className="field">
-                <span>Price (CAD)</span>
+                <span>Price (CAD, daily rate for rentals)</span>
                 <input name="price" type="number" min={0} step="0.01" required />
               </label>
               <label className="field">
@@ -254,9 +266,19 @@ export default function AdminPage() {
               <textarea name="defects" placeholder="Be specific for buyers" />
             </label>
             <label className="field">
-              <span>Dimensions (resale)</span>
+              <span>Dimensions (resale / rental)</span>
               <input name="dimensions" />
             </label>
+            <div className="form-grid two">
+              <label className="field">
+                <span>Deposit (rental, CAD)</span>
+                <input name="deposit" type="number" min={0} step="1" defaultValue={0} />
+              </label>
+              <label className="field">
+                <span>Minimum days (rental)</span>
+                <input name="minDays" type="number" min={1} step="1" defaultValue={1} />
+              </label>
+            </div>
             <label className="field">
               <span>Fulfillment</span>
               <select name="fulfillment" defaultValue="ship,delivery,pickup">
@@ -327,6 +349,71 @@ export default function AdminPage() {
                           <option value="pending-approval">Pending approval</option>
                           <option value="fulfilled">Fulfilled</option>
                           <option value="cancelled">Cancelled</option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
+
+        {tab === "rentals" && (
+          <div style={{ overflowX: "auto" }}>
+            {rentalRequests.length === 0 ? (
+              <p>No rental requests yet.</p>
+            ) : (
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Request</th>
+                    <th>Dates</th>
+                    <th>Contact</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rentalRequests.map((r) => (
+                    <tr key={r.id}>
+                      <td>
+                        <strong>{r.id}</strong>
+                        <div>{r.productName}</div>
+                        <div style={{ opacity: 0.65 }}>{r.fulfillment}</div>
+                        {r.notes && <div style={{ fontSize: "0.85rem" }}>{r.notes}</div>}
+                      </td>
+                      <td>
+                        {r.startDate} to {r.endDate}
+                        <div style={{ opacity: 0.65 }}>
+                          {r.days} day{r.days === 1 ? "" : "s"}
+                        </div>
+                      </td>
+                      <td>
+                        {r.name}
+                        <div>{r.email}</div>
+                        <div>{r.phone}</div>
+                      </td>
+                      <td>
+                        {formatCAD(r.rentalTotal)}
+                        <div style={{ opacity: 0.65 }}>
+                          + {formatCAD(r.deposit)} deposit
+                        </div>
+                      </td>
+                      <td>
+                        <select
+                          value={r.status}
+                          onChange={(e) =>
+                            updateRentalRequest(r.id, {
+                              status: e.target.value as typeof r.status,
+                            })
+                          }
+                        >
+                          <option value="new">New</option>
+                          <option value="confirmed">Confirmed</option>
+                          <option value="out">Out on rental</option>
+                          <option value="returned">Returned</option>
+                          <option value="declined">Declined</option>
                         </select>
                       </td>
                     </tr>

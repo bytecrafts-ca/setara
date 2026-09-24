@@ -37,6 +37,7 @@ export default function ContactPage() {
               <select name="topic" defaultValue="general">
                 <option value="general">General</option>
                 <option value="order">Order help</option>
+                <option value="rental">Rental</option>
                 <option value="resale">Resale listing</option>
                 <option value="custom">Custom gift</option>
               </select>

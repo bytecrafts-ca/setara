@@ -20,7 +20,11 @@ export function ProductVisual({
       <div className="visual-orb" />
       <div className="visual-panel" />
       <span className="visual-label">
-        {product.area === "resale" ? "Resale" : product.category}
+        {product.area === "resale"
+          ? "Resale"
+          : product.area === "rental"
+            ? "Rental"
+            : product.category}
       </span>
     </div>
   );

@@ -14,7 +14,7 @@ export type CartLine = {
   wrappingId?: string;
   wrappingName?: string;
   wrappingPrice?: number;
-  area: "retail" | "resale";
+  area: "retail" | "resale" | "rental";
   fulfillmentOptions: string[];
   pickupOnly?: boolean;
 };

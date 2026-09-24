@@ -9,7 +9,9 @@ export function ProductCard({ product }: { product: Product }) {
   const href =
     product.area === "resale"
       ? `/resale/${product.id}`
-      : `/shop/${product.id}`;
+      : product.area === "rental"
+        ? `/rentals/${product.id}`
+        : `/shop/${product.id}`;
 
   return (
     <article className="product-card">
@@ -31,6 +33,7 @@ export function ProductCard({ product }: { product: Product }) {
               ? `${conditionLabel(product.condition)} · `
               : ""}
             {formatCAD(product.price)}
+            {product.area === "rental" && " / day"}
           </p>
         </div>
       </Link>
