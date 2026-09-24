@@ -41,6 +41,7 @@ export const useCatalog = create<CatalogState>()(
     }),
     {
       name: "zak-supplies-catalog",
+      skipHydration: true,
       onRehydrateStorage: () => (state) => {
         state?.setHydrated(true);
       },

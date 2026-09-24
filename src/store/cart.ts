@@ -85,7 +85,7 @@ export const useCart = create<CartState>()(
       clear: () => set({ lines: [] }),
       setFulfillment: (f) => set({ fulfillment: f }),
     }),
-    { name: "zak-supplies-cart" },
+    { name: "zak-supplies-cart", skipHydration: true },
   ),
 );
 

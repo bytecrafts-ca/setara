@@ -37,7 +37,7 @@ function SearchContent() {
           Search across home goods, clothing, gifts, and resale listings in one
           place.
         </p>
-        <SearchBar variant="hero" defaultValue={q} />
+        <SearchBar key={q} variant="hero" defaultValue={q} />
       </div>
       <div className="page-shell" style={{ paddingTop: 0 }}>
         {q && (

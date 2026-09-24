@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
-import { Search } from "lucide-react";
+import { FormEvent, useState } from "react";
+import { ArrowRight, Search } from "lucide-react";
 
 type SearchBarProps = {
   variant?: "header" | "hero";
@@ -12,16 +12,11 @@ type SearchBarProps = {
 
 export function SearchBar({
   variant = "header",
-  placeholder = "Search home, clothing, gifts, and more",
+  placeholder = "Search home, clothing, gifts...",
   defaultValue = "",
 }: SearchBarProps) {
   const router = useRouter();
   const [query, setQuery] = useState(defaultValue);
-
-  useEffect(() => {
-    setQuery(defaultValue);
-  }, [defaultValue]);
-
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     const q = query.trim();
@@ -44,6 +39,7 @@ export function SearchBar({
       />
       <button type="submit" className="btn primary search-submit">
         Search
+        <ArrowRight size={15} aria-hidden />
       </button>
     </form>
   );

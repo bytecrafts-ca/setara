@@ -72,6 +72,6 @@ export const useOrders = create<OrdersState>()(
           ),
         }),
     }),
-    { name: "zak-supplies-orders" },
+    { name: "zak-supplies-orders", skipHydration: true },
   ),
 );

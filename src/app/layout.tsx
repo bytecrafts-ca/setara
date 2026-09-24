@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
-import { Figtree, Fraunces } from "next/font/google";
+import { Figtree, Great_Vibes, Playfair_Display } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { StoreHydrator } from "@/components/StoreHydrator";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
-  axes: ["SOFT", "WONK", "opsz"],
+});
+
+const greatVibes = Great_Vibes({
+  variable: "--font-great-vibes",
+  subsets: ["latin"],
+  weight: "400",
 });
 
 const figtree = Figtree({
@@ -27,8 +33,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-CA" className={`${fraunces.variable} ${figtree.variable} h-full`}>
+    <html
+      lang="en-CA"
+      className={`${playfair.variable} ${greatVibes.variable} ${figtree.variable} h-full`}
+    >
       <body className="min-h-full flex flex-col antialiased">
+        <StoreHydrator />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
