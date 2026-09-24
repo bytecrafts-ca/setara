@@ -10,6 +10,7 @@
   --copper-deep: #8e4632;
   --forest: #0f2a21;
   --gold: #c9a36a;
+  --gold-deep: #8f6a36;
   --cream: #f5efe4;
   --cream-light: #fbf7f0;
   --line-warm: rgba(201, 163, 106, 0.35);
@@ -68,9 +69,10 @@ textarea {
   position: sticky;
   top: 0;
   z-index: 40;
-  background: var(--forest);
-  color: var(--cream);
-  border-bottom: 1px solid rgba(201, 163, 106, 0.18);
+  background: var(--cream);
+  color: var(--forest);
+  border-bottom: 1px solid var(--line-warm);
+  box-shadow: 0 6px 20px rgba(15, 42, 33, 0.06);
 }
 
 .header-inner {
@@ -91,7 +93,7 @@ textarea {
 }
 
 .brand-icon {
-  color: var(--gold);
+  color: var(--gold-deep);
   flex-shrink: 0;
 }
 
@@ -105,14 +107,15 @@ textarea {
   font-family: var(--font-display);
   font-size: clamp(1.35rem, 2.6vw, 1.9rem);
   font-weight: 500;
-  color: var(--cream);
+  color: var(--forest);
 }
 
 .brand-tagline {
   margin-top: 0.4rem;
   font-size: 0.6rem;
+  font-weight: 600;
   letter-spacing: 0.32em;
-  color: var(--gold);
+  color: var(--gold-deep);
 }
 
 .desk-nav {
@@ -124,13 +127,13 @@ textarea {
   position: relative;
   padding: 0.4rem 0;
   font-size: 0.9rem;
-  color: rgba(245, 239, 228, 0.82);
+  color: rgba(15, 42, 33, 0.72);
   transition: color 0.2s ease;
 }
 
 .desk-nav a:hover,
 .desk-nav a.active {
-  color: var(--cream);
+  color: var(--forest);
 }
 
 .desk-nav a.active::after {
@@ -165,7 +168,7 @@ textarea {
 }
 
 .icon-btn:hover {
-  background: rgba(245, 239, 228, 0.08);
+  background: rgba(15, 42, 33, 0.07);
 }
 
 .icon-btn:focus-visible,
@@ -183,8 +186,8 @@ textarea {
   height: 18px;
   padding: 0 4px;
   border-radius: 999px;
-  background: var(--gold);
-  color: var(--forest);
+  background: var(--forest);
+  color: var(--cream);
   font-size: 0.65rem;
   font-weight: 700;
   display: grid;
@@ -206,13 +209,13 @@ textarea {
   flex-direction: column;
   gap: 0.25rem;
   padding: 0.5rem 1.25rem 1.25rem;
-  border-top: 1px solid rgba(245, 239, 228, 0.1);
+  border-top: 1px solid var(--line-warm);
 }
 
 .mobile-nav a {
   font-size: 1.05rem;
   padding: 0.6rem 0;
-  color: rgba(245, 239, 228, 0.88);
+  color: var(--forest);
 }
 
 @media (min-width: 900px) {
@@ -1225,7 +1228,8 @@ textarea {
 .search-bar-header {
   padding: 0.35rem 0.4rem 0.35rem 0.85rem;
   box-shadow: none;
-  background: var(--cream);
+  background: white;
+  border-color: var(--line-warm);
 }
 
 .search-bar-header .search-submit {
