@@ -347,30 +347,44 @@ textarea {
 
 @media (max-width: 799px) {
   .hero {
+    --hero-photo-h: clamp(300px, 88vw, 440px);
+    display: block;
     min-height: auto;
-    align-items: flex-end;
   }
 
   .hero-bg {
-    object-position: 78% center;
+    inset: 0 0 auto 0 !important;
+    height: var(--hero-photo-h) !important;
+    object-position: 84% 60%;
   }
 
   .hero-shade {
-    background: linear-gradient(
-      180deg,
-      rgba(10, 30, 23, 0.35) 0%,
-      rgba(10, 30, 23, 0.78) 45%,
-      rgba(10, 30, 23, 0.95) 100%
-    );
+    background:
+      linear-gradient(
+        180deg,
+        rgba(15, 42, 33, 0) 0,
+        rgba(15, 42, 33, 0) calc(var(--hero-photo-h) * 0.68),
+        rgba(15, 42, 33, 0.85) calc(var(--hero-photo-h) * 0.9),
+        var(--forest) var(--hero-photo-h)
+      );
   }
 
   .hero-content {
-    padding-top: 9rem;
+    padding-top: calc(var(--hero-photo-h) * 0.9);
     padding-bottom: 2.75rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2.6rem, 12vw, 3.4rem);
+  }
+
+  .hero-rule {
+    margin: 1.1rem 0;
   }
 
   .hero-ctas .btn {
     flex: 1 1 100%;
+    justify-content: space-between;
   }
 }
 
