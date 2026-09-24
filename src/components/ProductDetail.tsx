@@ -8,7 +8,8 @@ import { ProductVisual } from "@/components/ProductVisual";
 import { useCatalog } from "@/store/catalog";
 import { useCart } from "@/store/cart";
 
-export function ProductDetail({ area }: { area: "retail" | "resale" }) {  const params = useParams<{ id: string }>();
+export function ProductDetail({ area }: { area: "retail" | "resale" }) {
+  const params = useParams<{ id: string }>();
   const router = useRouter();
   const all = useCatalog((s) => s.products);
   const product = useMemo(
